@@ -1,16 +1,20 @@
 import {Injectable} from '@nestjs/common';
 import {User} from './types/users.dto';
 import {RedisService} from './modules/redis/redis.service';
+import {AppRepository} from './app.repository';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly redis: RedisService) {}
+  constructor(
+    private readonly redis: RedisService,
+    private readonly repository: AppRepository,
+  ) {}
 
   getHello(): string {
     return 'Hello World!';
   }
 
-  getById = async (id: number): Promise<User> => {
+  getById = async (id: number): Promise<User | null> => {
     const key = `user:${id}`;
 
     try {
@@ -24,7 +28,7 @@ export class AppService {
       console.log(error);
     }
 
-    const user: User = {id: 1, name: 'name'};
+    const user = await this.repository.getById(id);
 
     if (user?.id) {
       await this.redis.set(key, user);
