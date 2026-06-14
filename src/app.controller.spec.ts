@@ -40,7 +40,8 @@ describe('AppController', () => {
   afterAll(async () => {
     await db('users').truncate();
     await cache.flushall();
-    db.destroy();
+    await cache.quit();
+    await db.destroy();
 
     await app.close();
   });
@@ -93,6 +94,20 @@ describe('AppController', () => {
       const user = await appController.getById(787);
 
       expect(user).toBeNull();
+    });
+
+    it('try to create dublicate', async () => {
+      let error: any;
+      try {
+        await appController.createUser({
+          email: 'user@mail.ru',
+          password_hash: 'ffff',
+        });
+      } catch (exception) {
+        error = exception;
+      }
+
+      expect(error.code).toBe('23505'); //dublicate
     });
   });
 });
