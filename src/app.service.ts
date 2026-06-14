@@ -28,7 +28,7 @@ export class AppService {
     return user;
   };
 
-  createUser = (body: Omit<User, 'id'>) => {
+  create = (body: Omit<User, 'id'>) => {
     return this.repository.create(body);
   };
 }

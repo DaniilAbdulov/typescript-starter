@@ -53,8 +53,8 @@ describe('AppController', () => {
       password_hash: 'ffff',
     };
 
-    it('shouldCreateUser', async () => {
-      const newUserId = await appController.createUser({
+    it('should create user', async () => {
+      const newUserId = await appController.create({
         email: 'user@mail.ru',
         password_hash: 'ffff',
       });
@@ -99,7 +99,7 @@ describe('AppController', () => {
     it('try to create dublicate', async () => {
       let error: any;
       try {
-        await appController.createUser({
+        await appController.create({
           email: 'user@mail.ru',
           password_hash: 'ffff',
         });

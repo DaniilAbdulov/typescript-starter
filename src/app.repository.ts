@@ -6,19 +6,17 @@ import type {Knex} from 'knex';
 export class AppRepository {
   constructor(@Inject('KNEX_CONNECTION') private readonly knex: Knex) {}
 
-  getById = async (id: number) => {
-    const user = (await this.knex('users')
-      .where({id})
-      .first()) as Promise<User | null>;
+  getById = async (id: number): Promise<User | null> => {
+    const user = await this.knex('users').where({id}).first();
 
     return user ?? null;
   };
 
   create = async (body: Omit<User, 'id'>): Promise<number> => {
-    const [{id: newUserId}] = await this.knex('users')
+    const [{id: newRecordId}] = await this.knex('users')
       .insert(body)
       .returning('id');
 
-    return newUserId;
+    return newRecordId;
   };
 }

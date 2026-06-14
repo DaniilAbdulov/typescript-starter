@@ -20,10 +20,10 @@ export class AppController {
   }
 
   @Post()
-  createUser(
+  create(
     @Body(new ZodValidationPipe(usersDto.UserSchema))
     body: Omit<usersDto.User, 'id'>,
   ) {
-    return this.appService.createUser(body);
+    return this.appService.create(body);
   }
 }
