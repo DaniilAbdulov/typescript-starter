@@ -1,4 +1,3 @@
-// app.repository.ts
 import {Injectable, Inject} from '@nestjs/common';
 import {User} from './types/users.dto';
 import type {Knex} from 'knex';
@@ -13,5 +12,13 @@ export class AppRepository {
       .first()) as Promise<User | null>;
 
     return user ?? null;
+  };
+
+  create = async (body: Omit<User, 'id'>): Promise<number> => {
+    const [{id: newUserId}] = await this.knex('users')
+      .insert(body)
+      .returning('id');
+
+    return newUserId;
   };
 }

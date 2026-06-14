@@ -10,22 +10,13 @@ export class AppService {
     private readonly repository: AppRepository,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
   getById = async (id: number): Promise<User | null> => {
     const key = `user:${id}`;
 
-    try {
-      const userFromCache = await this.redis.get<User>(key); //тут очень хорош дженерик
+    const userFromCache = await this.redis.get<User>(key); //тут очень хорош дженерик
 
-      if (userFromCache) {
-        console.log(`getById from cache...`);
-        return userFromCache;
-      }
-    } catch (error) {
-      console.log(error);
+    if (userFromCache) {
+      return userFromCache;
     }
 
     const user = await this.repository.getById(id);
@@ -35,5 +26,9 @@ export class AppService {
     }
 
     return user;
+  };
+
+  createUser = (body: Omit<User, 'id'>) => {
+    return this.repository.create(body);
   };
 }

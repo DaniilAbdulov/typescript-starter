@@ -14,23 +14,16 @@ import {ZodValidationPipe} from './pipes/ZodValidationPipe';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
   @Get(':id')
   getById(@Param('id', ParseFloatPipe) id: number) {
-    console.log(`id: ${id}`);
-
     return this.appService.getById(id);
   }
 
   @Post()
   createUser(
-    @Body(new ZodValidationPipe(usersDto.UserSchema)) body: usersDto.User,
+    @Body(new ZodValidationPipe(usersDto.UserSchema))
+    body: Omit<usersDto.User, 'id'>,
   ) {
-    console.log(`body`, body);
-    return body;
+    return this.appService.createUser(body);
   }
 }
