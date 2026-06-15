@@ -6,9 +6,9 @@ import {
   ParseFloatPipe,
   Post,
 } from '@nestjs/common';
-import {AppService} from './app.service';
-import * as usersDto from './types/users.dto';
-import {ZodValidationPipe} from './pipes/ZodValidationPipe';
+import {AppService} from '../services/app.service';
+import * as usersDto from '../types/users.dto';
+import {ZodValidationPipe} from '../pipes/ZodValidationPipe';
 
 @Controller()
 export class AppController {

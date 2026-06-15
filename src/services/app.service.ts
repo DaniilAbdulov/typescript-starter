@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
-import {User} from './types/users.dto';
-import {RedisService} from './modules/redis/redis.service';
-import {AppRepository} from './app.repository';
+import {User} from '../types/users.dto';
+import {RedisService} from '../modules/redis/redis.service';
+import {AppRepository} from '../repositories/app.repository';
 
 @Injectable()
 export class AppService {

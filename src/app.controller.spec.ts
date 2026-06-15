@@ -1,9 +1,9 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {Knex} from 'knex';
 import {describe, beforeAll, afterAll, it, expect, jest} from '@jest/globals';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {AppRepository} from './app.repository';
+import {AppController} from './controllers/app.controller';
+import {AppService} from './services/app.service';
+import {AppRepository} from './repositories/app.repository';
 import {ConfigModule} from '@nestjs/config';
 import {KnexModule} from './modules/knex/knex.module';
 import {RedisModule} from './modules/redis/redis.module';

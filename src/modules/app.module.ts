@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {RedisModule} from './modules/redis/redis.module';
-import {KnexModule} from './modules/knex/knex.module';
-import {AppRepository} from './app.repository';
+import {AppController} from '../controllers/app.controller';
+import {AppService} from '../services/app.service';
+import {RedisModule} from './redis/redis.module';
+import {KnexModule} from './knex/knex.module';
+import {AppRepository} from '../repositories/app.repository';
 
 @Module({
   imports: [
