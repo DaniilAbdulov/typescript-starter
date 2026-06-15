@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
-import {AppController} from '../controllers/app.controller';
-import {AppService} from '../services/app.service';
+import {UsersService} from '../services/users.service';
 import {RedisModule} from './redis/redis.module';
 import {KnexModule} from './knex/knex.module';
-import {AppRepository} from '../repositories/app.repository';
+import {UsersRepository} from '../repositories/users.repository';
+import {UsersController} from '../controllers/users.controller';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import {AppRepository} from '../repositories/app.repository';
     KnexModule,
     RedisModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AppRepository],
+  controllers: [UsersController],
+  providers: [UsersService, UsersRepository],
 })
 export class AppModule {}

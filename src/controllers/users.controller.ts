@@ -6,17 +6,17 @@ import {
   ParseFloatPipe,
   Post,
 } from '@nestjs/common';
-import {AppService} from '../services/app.service';
 import * as usersDto from '../types/users.dto';
 import {ZodValidationPipe} from '../pipes/ZodValidationPipe';
+import {UsersService} from '../services/users.service';
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class UsersController {
+  constructor(private readonly users: UsersService) {}
 
   @Get(':id')
   getById(@Param('id', ParseFloatPipe) id: number) {
-    return this.appService.getById(id);
+    return this.users.getById(id);
   }
 
   @Post()
@@ -24,6 +24,6 @@ export class AppController {
     @Body(new ZodValidationPipe(usersDto.UserSchema))
     body: Omit<usersDto.User, 'id'>,
   ) {
-    return this.appService.create(body);
+    return this.users.create(body);
   }
 }

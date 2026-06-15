@@ -1,25 +1,25 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {Knex} from 'knex';
 import {describe, beforeAll, afterAll, it, expect, jest} from '@jest/globals';
-import {AppController} from './controllers/app.controller';
-import {AppService} from './services/app.service';
-import {AppRepository} from './repositories/app.repository';
+import {UsersController} from './controllers/users.controller';
+import {UsersService} from './services/users.service';
 import {ConfigModule} from '@nestjs/config';
 import {KnexModule} from './modules/knex/knex.module';
 import {RedisModule} from './modules/redis/redis.module';
 import Redis from 'ioredis';
+import {UsersRepository} from './repositories/users.repository';
 
-describe('AppController', () => {
+describe('Users controller', () => {
   let app: TestingModule;
-  let appController: AppController;
+  let usersController: UsersController;
   let db: Knex;
   let cache: Redis;
-  let appRepository: AppRepository;
+  let usersRepository: UsersRepository;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService, AppRepository],
+      controllers: [UsersController],
+      providers: [UsersService, UsersRepository],
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
@@ -30,8 +30,8 @@ describe('AppController', () => {
       ],
     }).compile();
 
-    appController = app.get(AppController);
-    appRepository = app.get(AppRepository);
+    usersController = app.get(UsersController);
+    usersRepository = app.get(UsersRepository);
 
     db = app.get('KNEX_CONNECTION');
     cache = app.get('REDIS_CLIENT');
@@ -54,7 +54,7 @@ describe('AppController', () => {
     };
 
     it('should create user', async () => {
-      const newUserId = await appController.create({
+      const newUserId = await usersController.create({
         email: 'user@mail.ru',
         password_hash: 'ffff',
       });
@@ -63,7 +63,7 @@ describe('AppController', () => {
     });
 
     it('should return User', async () => {
-      const user = await appController.getById(USER.id);
+      const user = await usersController.getById(USER.id);
 
       expect(user).toStrictEqual({
         id: USER.id,
@@ -75,9 +75,9 @@ describe('AppController', () => {
     });
 
     it('should return User from cache without SQL query', async () => {
-      const getByIdSpy = jest.spyOn(appRepository, 'getById');
+      const getByIdSpy = jest.spyOn(usersRepository, 'getById');
 
-      const user = await appController.getById(USER.id);
+      const user = await usersController.getById(USER.id);
 
       expect(user).toStrictEqual({
         id: USER.id,
@@ -91,7 +91,7 @@ describe('AppController', () => {
     });
 
     it('should return null', async () => {
-      const user = await appController.getById(787);
+      const user = await usersController.getById(787);
 
       expect(user).toBeNull();
     });
@@ -99,7 +99,7 @@ describe('AppController', () => {
     it('try to create dublicate', async () => {
       let error: any;
       try {
-        await appController.create({
+        await usersController.create({
           email: 'user@mail.ru',
           password_hash: 'ffff',
         });

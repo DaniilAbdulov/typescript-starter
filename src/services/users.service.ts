@@ -1,13 +1,13 @@
 import {Injectable} from '@nestjs/common';
 import {User} from '../types/users.dto';
 import {RedisService} from '../modules/redis/redis.service';
-import {AppRepository} from '../repositories/app.repository';
+import {UsersRepository} from '../repositories/users.repository';
 
 @Injectable()
-export class AppService {
+export class UsersService {
   constructor(
     private readonly redis: RedisService,
-    private readonly repository: AppRepository,
+    private readonly repository: UsersRepository,
   ) {}
 
   getById = async (id: number): Promise<User | null> => {
@@ -28,7 +28,5 @@ export class AppService {
     return user;
   };
 
-  create = (body: Omit<User, 'id'>) => {
-    return this.repository.create(body);
-  };
+  create = (body: Omit<User, 'id'>) => this.repository.create(body);
 }
